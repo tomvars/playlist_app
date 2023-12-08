@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<head>
+    <title>Playlist Viewer</title>
+</head>
+<body>
+    <h2>Playlist Viewer</h2>
+    <label for="playlistId">Playlist ID:</label>
+    <input type="number" id="playlistId" name="playlistId">
+    <button onclick="getPlaylist()">View Tracks</button>
+
+    <div id="tracks"></div>
+
+    <script>
+        function getPlaylist() {
+            var playlistId = document.getElementById('playlistId').value;
+            fetch('/playlist/' + playlistId)
+            .then(response => response.json())
+            .then(data => {
+                var tracksDiv = document.getElementById('tracks');
+                tracksDiv.innerHTML = ''; // Clear previous results
+                var list = '<ul>';
+                for (var i = 0; i < data.length; i++) {
+                    list += '<li>' + data[i].track_name + ' (ID: ' + data[i].track_id + ')</li>';
+                }
+                list += '</ul>';
+                tracksDiv.innerHTML = list;
+            });
+        }
+    </script>
+</body>
+</html>
